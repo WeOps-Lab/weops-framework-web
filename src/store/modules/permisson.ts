@@ -25,7 +25,7 @@ function handleMenuList(userInfo) {
         }
         return false
     })
-    const allMenus = JSON.parse(JSON.stringify(window.is_activate ? menuList : inactiveMenuList))
+    const allMenus = JSON.parse(JSON.stringify(window['is_activate'] ? menuList : inactiveMenuList))
     handleAllMenus(allMenus)
     const handleNeedMenuList = handleBelongModule(userInfo.applications, JSON.parse(JSON.stringify(allMenus)))
     const userMenus = userInfo.menus
@@ -146,6 +146,7 @@ const actions = {
                     const { data } = res
                     data.menus = ['HelloWorld'].concat(data.menus)
                     sessionStorage.setItem('loginInfo', JSON.stringify(data))
+                    // @ts-ignore
                     window.$store.commit('setLoginInfo', data)
                     commit('setUser', { ...data })
                     if (api.ticket) {
