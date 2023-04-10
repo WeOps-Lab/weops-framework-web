@@ -7,9 +7,6 @@ import axios from 'axios'
 // 按需全量引入 bk-magic-vue 样式
 import 'bk-magic-vue/dist/bk-magic-vue.min.css'
 import '@/assets/componentLibrary/demand-import'
-// 图标引入
-import '@canway/cw-icon-weops'
-import '@canway/cw-icon-weops/src/index'
 // import '@/assets/componentLibrary/fully-import';
 // 几何图
 import * as Echarts from 'echarts'
