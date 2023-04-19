@@ -30,6 +30,7 @@ declare module "vue/types/vue" {
         $bkInfo: any,
         $DateDisplay: any,
         $groupData: any,
-        $Copy: any
+        $Copy: any,
+        $getSvgIcon: any
     }
 }
