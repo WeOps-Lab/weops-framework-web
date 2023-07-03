@@ -1,14 +1,15 @@
-// @ts-ignore
+// @ts-nocheck
 'use strict'
 const path = require('path')
 const utils = require('./utils.ts')
 const webpack = require('webpack')
 const config = require('../config/index.ts')
-const merge = require('webpack-merge')
+const { merge } = require('webpack-merge')
 const baseWebpackConfig = require('./webpack.base.conf.ts')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
+// const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const ReplaceTemplateStaticUrlPlugin = require('./replace-template-static-url-plugin.ts')
@@ -24,14 +25,24 @@ const webpackConfig = merge(baseWebpackConfig, {
     },
     devtool: config.build.productionSourceMap ? config.build.devtool : false,
     optimization: {
+        moduleIds: 'deterministic',
+        chunkIds: 'deterministic',
         // 压缩
         minimize: true,
 
         minimizer: [
+            new CssMinimizerPlugin({
+                minimizerOptions: {
+                    preset: ['default', {
+                      discardComments: { removeAll: true },
+                    }],
+                  },
+                parallel: true
+            }),
             new TerserPlugin({
                 parallel: true, // 多进程并发运行
                 extractComments: false, // 不将注释剥离到单独的文件
-                cache: true // 缓存
+                // cache: true // 缓存
             })
         ],
 
@@ -56,7 +67,7 @@ const webpackConfig = merge(baseWebpackConfig, {
             // 初始化的时候最多有 3 个请求该 module
             maxInitialRequests: 3,
             // chunk 的名字，如果设成 true，会根据被提取的 chunk 自动生成
-            name: true,
+            name: '',
             cacheGroups: {
                 // 提取 chunk-bk-magic-vue 代码块
                 bkMagicVue: {
@@ -112,11 +123,11 @@ const webpackConfig = merge(baseWebpackConfig, {
 
         // Compress extracted CSS. We are using this plugin so that possible
         // duplicated CSS from different components can be deduped.
-        new OptimizeCSSPlugin({
-            cssProcessorOptions: config.build.productionSourceMap
-                ? {safe: true, map: {inline: false}}
-                : {safe: true}
-        }),
+        // new OptimizeCSSPlugin({
+        //     cssProcessorOptions: config.build.productionSourceMap
+        //         ? {safe: true, map: {inline: false}}
+        //         : {safe: true}
+        // }),
 
         // generate dist index.html with correct asset hash for caching.
         // you can customize output by editing /index.html
@@ -134,12 +145,12 @@ const webpackConfig = merge(baseWebpackConfig, {
             },
             sourceMap: true,
             // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-            chunksSortMode: 'dependency',
+            // chunksSortMode: 'dependency',
             staticUrl: '{{ STATIC_URL }}',
             timeStamp: time
         }),
         // keep module.id stable when vendor modules does not change
-        new webpack.HashedModuleIdsPlugin(),
+        new webpack.ids.HashedModuleIdsPlugin(),
 
         // copy custom static assets
         // new CopyWebpackPlugin([

@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-nocheck
 'use strict'
 const path = require('path');
 const webpack = require('webpack')
@@ -32,6 +32,11 @@ module.exports = {
         */
         library: '_dll_[name]'
     },
+    resolve: {
+        fallback: {
+            path: require.resolve('path-browserify'),
+        }
+    },
     plugins: [
         // 使用插件 DllPlugin
         new DllPlugin({
@@ -53,14 +58,14 @@ module.exports = {
                 }
             },
             extractComments: false,
-            cache: true,
+            // cache: true,
             parallel: true,
-            sourceMap: true
+            // sourceMap: true
         }),
 
         new webpack.LoaderOptionsPlugin({
             minimize: true
         }),
-        new webpack.optimize.OccurrenceOrderPlugin()
+        // new webpack.optimize.OccurrenceOrderPlugin()
     ]
 };

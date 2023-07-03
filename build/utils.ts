@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-nocheck
 'use strict'
 const path = require('path')
 const config = require('../config/index.ts')

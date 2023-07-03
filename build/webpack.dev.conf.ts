@@ -1,9 +1,9 @@
-// @ts-ignore
+// @ts-nocheck
 'use strict'
 const utils = require('./utils.ts')
 const webpack = require('webpack')
 const config = require('../config/index.ts')
-const merge = require('webpack-merge')
+const { merge } = require('webpack-merge')
 const path = require('path')
 const baseWebpackConfig = require('./webpack.base.conf.ts')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
@@ -24,28 +24,32 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 
     // these devServer options should be customized in /config/index.ts
     devServer: {
-        clientLogLevel: 'warning',
+        client: {
+            logging: 'warn',
+            overlay: config.dev.errorOverlay
+            ? {warnings: false, errors: true}
+            : false,
+        },
         historyApiFallback: {
             rewrites: [
                 {from: /.*/, to: path.posix.join(config.dev.assetsPublicPath, 'index-dev.html')}
             ]
         },
         hot: true,
-        contentBase: false, // since we use CopyWebpackPlugin.
+        // contentBase: false, // since we use CopyWebpackPlugin.
         compress: true,
         host: HOST || config.dev.host,
         port: PORT || config.dev.port,
         open: config.dev.autoOpenBrowser,
-        overlay: config.dev.errorOverlay
-            ? {warnings: false, errors: true}
-            : false,
-        publicPath: config.dev.assetsPublicPath,
-        proxy: config.dev.proxyTable,
-        quiet: true, // necessary for FriendlyErrorsPlugin
-        watchOptions: {
-            poll: config.dev.poll
+        static: {
+            publicPath: config.dev.assetsPublicPath,
         },
-        disableHostCheck: true
+        proxy: config.dev.proxyTable,
+        // quiet: true, // necessary for FriendlyErrorsPlugin
+        // disableHostCheck: true
+    },
+    watchOptions: {
+        poll: config.dev.poll
     },
     plugins: [
 
@@ -57,7 +61,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
             template: 'index-dev.html',
             inject: true,
             chunks: ['app'],
-            chunksSortMode: 'dependency'
+            // chunksSortMode: 'dependency'  webpack5 里面chunksSortMode选项已经被移除，用chunkIds和moduleIds 默认配置更高效率
         }),
         new webpack.ProvidePlugin({
             $: 'jquery',
@@ -75,7 +79,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         // ])
     ],
     optimization: {
-        noEmitOnErrors: true
+        emitOnErrors: false
     }
 })
 
