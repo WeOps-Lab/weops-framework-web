@@ -7,6 +7,7 @@
         navigation-type="top-bottom"
         :need-menu="needLeftNav"
         :head-height="headerHight"
+        :class="{ 'navigation-other-wrapper': user.expired_day <= user.notify_day }"
         @toggle="handleToggle">
         <template slot="side-icon">
             <div class="monitor-logo" @click="goHome">
@@ -58,7 +59,10 @@
                             </ul>
                         </template>
                     </bk-popover>
-                    <span class="version">v{{ version }}</span>
+                    <span class="version" @click="checkVersionLog">
+                        v{{ version }}
+                        <span class="cw-icon weops-directions-fill version-tips"></span>
+                    </span>
                     <bk-badge
                         v-if="ticketIconVisible"
                         style="width: 25px;height: 25px;"
@@ -74,6 +78,7 @@
         <template slot="menu">
             <bk-navigation-menu
                 ref="menu"
+                :before-nav-change="beforeNavChange"
                 :default-active="defaultActive"
                 :toggle-active="nav.toggle"
                 style="cursor: default;"
@@ -112,19 +117,22 @@
             <img :src="qrode" alt="这是一个二维码" width="200" height="200">
         </bk-dialog>
         <personal-info ref="personalInfo"></personal-info>
+        <version-log ref="versionLog"></version-log>
     </bk-navigation>
 </template>
 
 <script lang="ts">
     import { Component, Vue, Watch } from 'vue-property-decorator'
     import Container from './container.vue'
-    import personalInfo from './personalInfo.vue'
+    import PersonalInfo from './personalInfo.vue'
+    import VersionLog from './versionLog.vue'
     import { mapState } from 'vuex'
     import { removeItemsWithId } from '@/common/dealMenu'
     @Component({
         components: {
             Container,
-            personalInfo
+            PersonalInfo,
+            VersionLog
         },
         computed: {
             ...mapState({
@@ -263,6 +271,10 @@
         beforeDestroy() {
             this.$bus.$off('updateLogo')
         }
+        checkVersionLog() {
+            const versionLog: any = this.$refs.versionLog
+            versionLog.show()
+        }
         checkPersonalInfo() {
             const personalInfo: any = this.$refs.personalInfo
             personalInfo.show()
@@ -362,18 +374,40 @@
             })
         }
         changeTopNav(item) {
-            this.activeTopNav = item.id
-            if (!item.children) {
+            if (item.isUrl) {
+                window.open(item.url, '_blank')
+            } else {
+                this.activeTopNav = item.id
+                if (!item.children) {
+                    this.$router.push({
+                        name: this.activeTopNav
+                    })
+                    return false
+                }
+                this.leftNavList = item.children
+                if (this.leftNavList.every(item => item.isUrl)) {
+                    return false
+                }
                 this.$router.push({
-                    name: this.activeTopNav
+                    name: this.findFirstNonUrlId(this.leftNavList)
                 })
-                return false
             }
-            this.leftNavList = item.children
-            const children = this.leftNavList[0].children
-            this.$router.push({
-                name: children?.length ? children[0].id : this.leftNavList[0].id
-            })
+        }
+        findFirstNonUrlId(arr) {
+            for (const item of arr) {
+                if (item.isUrl) {
+                    continue
+                }
+                if (item.children && item.children.length > 0) {
+                    const childResult = this.findFirstNonUrlId(item.children)
+                    if (childResult !== null) {
+                        return childResult
+                    }
+                } else {
+                    return item.id
+                }
+            }
+            return null
         }
         goHome() {
             this.$router.push('/')
@@ -382,15 +416,37 @@
         handleToggle(v) {
             this.nav.toggle = v
         }
+        beforeNavChange(item) {
+            const result = this.findItemById(this.leftNavList, item)
+            return !result.isUrl
+        }
+        findItemById(arr, id) {
+            for (const item of arr) {
+                if (item.id === id) {
+                    return item
+                }
+                if (item.children) {
+                    const found = this.findItemById(item.children, id)
+                    if (found) {
+                        return found
+                    }
+                }
+            }
+            return null
+        }
         handleNavItemClick(item) {
-            this.clickFlag = true
-            if (this.$route.name !== item.id) {
-                this.nav.name = item.name
-                sessionStorage.setItem('activeMenuId', JSON.stringify(item.id))
-                this.$router.push({
-                    name: item.id,
-                    params: item.params || {}
-                })
+            if (item.isUrl) {
+                window.open(item.url, '_blank')
+            } else {
+                this.clickFlag = true
+                if (this.$route.name !== item.id) {
+                    this.nav.name = item.name
+                    sessionStorage.setItem('activeMenuId', JSON.stringify(item.id))
+                    this.$router.push({
+                        name: item.id,
+                        params: item.params || {}
+                    })
+                }
             }
         }
         linkToCredit() {
@@ -414,7 +470,7 @@
         .credit-tip {
             position: absolute;
             top: 5px;
-            left: 150px;
+            left: 140px;
         }
     }
     .bk-navigation-wrapper .navigation-container {
@@ -439,7 +495,7 @@
         .top-nav {
             display: flex;
             height: 100%;
-            max-width: calc(100vw - 450px);
+            max-width: calc(100vw - 470px);
             overflow-x: auto;
             .top-nav-item {
                 list-style: none;
@@ -487,6 +543,17 @@
             .version {
                 font-size: 12px;
                 margin-right: 20px;
+                position: relative;
+                cursor: pointer;
+                &:hover {
+                    color: #fff;
+                }
+                .version-tips {
+                    position: absolute;
+                    font-size: 13px;
+                    right: -13px;
+                    top: -4px;
+                }
             }
         }
     }
@@ -690,11 +757,29 @@
             text-align: left !important;
         }
     }
+    // 适配到期情况的宽度
+    .navigation-other-wrapper {
+        .bk-navigation-title {
+            flex: 0 0 260px !important;
+        }
+        .monitor-navigation-header {
+            .top-nav {
+                max-width: calc(100vw - 530px);
+            }
+        }
+    }
     /* 当屏幕宽度小于或等于 1280 像素时 */
     @media screen and (max-width: 1280px) {
         .monitor-navigation-header {
             .top-nav {
                 max-width: 810px !important;
+            }
+        }
+        .navigation-other-wrapper {
+            .monitor-navigation-header {
+                .top-nav {
+                    max-width: 750px !important;
+                }
             }
         }
     }

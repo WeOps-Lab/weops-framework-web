@@ -8,7 +8,7 @@
 }(this, function() {
     'use strict'
     // 微前端路由合并
-    const files = require.context('@/projects', true, /frameRouter.js/)
+    const files = require.context('@/projects', true, /frameRouter.ts/)
     let frameRouter = []
     let adminRouteConfig = []
 

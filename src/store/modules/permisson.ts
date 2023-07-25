@@ -1,5 +1,6 @@
 // initial state
 import { menuList, subsMenuList } from '@/router/frameRouter'
+import { filterDataWithId } from '@/common/dealMenu'
 import vue from 'vue'
 
 import api from '@/api/index'
@@ -42,17 +43,7 @@ function handleActivationMenu(userInfo, type) {
             }
         }
     }
-    const inactiveMenuList = JSON.parse(JSON.stringify(customMenu)).filter(item => {
-        if (item.children) {
-            const grandChildren = item.children.filter(child => child.children)
-            if (grandChildren.length > 0) {
-                const greatGrandChildren = grandChildren[0].children.filter(grandChild => grandChild.id === 'CreditManage')
-                grandChildren[0].children = greatGrandChildren
-                return greatGrandChildren.length > 0
-            }
-        }
-        return false
-    })
+    const inactiveMenuList = filterDataWithId(JSON.parse(JSON.stringify(customMenu)), 'CreditManage')
     const allMenus = JSON.parse(JSON.stringify(window['is_activate'] ? customMenu : inactiveMenuList))
     handleAllMenus(allMenus)
     const handleNeedMenuList = handleBelongModule(userInfo.applications, JSON.parse(JSON.stringify(allMenus)))
@@ -124,7 +115,6 @@ function compare(p) {
         return a - b
     }
 }
-
 // getters
 const getters = {
     addNavLists: () => {
@@ -194,6 +184,14 @@ const actions = {
                     }
                     commit('setMenuList', handleMenuList(res.data))
                     commit('setActivationMenu', handleActivationMenu(res.data, ''))
+                    if (res.data.applications.includes('chat_ops') && hasCommonFolder('common')) {
+                        // @ts-ignore
+                        const commonFiles = require.context('@/projects', true, /\.ts$/)
+                        const module = commonFiles('./common/common/loadBot.ts')
+                        if (module?.default) {
+                            await module.default.loadChatBot()
+                        }
+                    }
                     resolve(res.data)
                 } else {
                     reject(res.message)

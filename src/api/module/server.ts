@@ -38,5 +38,11 @@ export default {
     },
     testEsb: function(params) {
         return post(reUrl + '/common/esb_test/', params)
+    },
+    getVersionLogsList: function(params = {}) {
+        return get(reUrl + '/version_log/version_logs_list/', params)
+    },
+    getversionLogDetail: function(params = {}) {
+        return get(reUrl + '/version_log/version_log_detail/', params)
     }
 }

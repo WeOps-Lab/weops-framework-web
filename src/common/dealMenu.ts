@@ -34,7 +34,7 @@ export function hasPathInChildren(data, path) {
             return true // 如果匹配，直接返回 true
         }
         // 判断当前对象是否有 children 属性且为非空数组
-        if (item.children && item.children.length) {
+        if (item.children?.length) {
             // 递归调用 hasPathInChildren 函数检查子级数组
             if (hasPathInChildren(item.children, path)) {
                 return true // 如果子级数组中存在匹配的 path，直接返回 true
@@ -54,4 +54,20 @@ export function findIdsWithNoChildren(data, result = []) {
         }
     }
     return result
+}
+
+export function filterDataWithId(arr, id) {
+    for (let i = 0; i < arr.length; i++) {
+        const item = arr[i]
+        if (item.id === id) {
+            return [item] // 返回包含id的项作为初始层级
+        }
+        if (item.children) {
+            const result = filterDataWithId(item.children, id)
+            if (result.length > 0) {
+                return [{ ...item, children: result }] // 返回包含id的项及其子层级的新对象
+            }
+        }
+    }
+    return [] // 没有找到符合条件的项
 }

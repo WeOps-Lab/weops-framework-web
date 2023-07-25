@@ -40,6 +40,8 @@
     window.CMDB = '{{ CMDB_HREF }}'
     window.JOB = '{{ JOB_HREF }}'
     window.ESB = '{{ BK_PAAS_HOST }}'
+    window.CURRENT_ENV = '{{ CURRENT_ENV }}' // 当前环境变量
+    window.CURRENT_URL = '{{ BK_PAAS_HOST }}{{ CURRENT_ENV }}/'
     window.CONSOLE_BIND_WX_TYPE = '{{ CONSOLE_BIND_WX_TYPE }}'
     window.EMAIL = '{{ email }}' // ESB 邮件
     window.SMS = '{{ sms }}' // ESB 短信
@@ -48,6 +50,8 @@
     window.CURRENT_IP = '{{ current_ip }}'
     window.remote_url = '{{ remote_url }}'
     window.is_activate = '{{ is_activate }}' === '1'
+    window.log_output_host = '{{ log_output_host }}'
+    window.OPSPLIOT_URL = '{{ OPSPLIOT_URL }}'
 </script>
 <div id="app"></div>
 <script type=text/javascript src="<%= htmlWebpackPlugin.options.staticUrl %>dist/dll/vendors.dll.<%= htmlWebpackPlugin.options.timeStamp %>.js"></script>
