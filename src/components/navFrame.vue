@@ -95,6 +95,7 @@
                     <span><i :class="[item.icon || 'cw-icon weops-folder', 'icon-class']"></i>{{ item.name }}</span>
                     <div slot="child">
                         <bk-navigation-menu-item
+                            class="child-menu-item"
                             v-for="child in item.children"
                             :key="child.name"
                             :id="child.id"
@@ -461,6 +462,10 @@
 </script>
 
 <style lang="scss">
+    .child-menu-item .navigation-menu-item-name {
+        overflow: auto !important;
+        white-space: normal !important;
+    }
     .bk-navigation {
         width: 100% !important;
     }
