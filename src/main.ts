@@ -28,6 +28,8 @@ import 'jquery'
 import copy from './directive/modal/copy'
 import cwMessage from './prototype/message'
 import uploader from 'vue-simple-uploader'
+import waterfall from 'vue-waterfall2'
+Vue.use(waterfall)
 Vue.use(uploader)
 // @ts-ignore
 Vue.use(Echarts)
@@ -63,15 +65,17 @@ Vue.prototype.$t = function(val) {
     return val
 }
 // 在template中使用可选链
-Vue.prototype.$optionalChaining = (obj, ...rest) => {
-    if (rest.includes('attributes') && rest.includes('api_name'))
-    let tmp = obj
-    for (const key in rest) {
-        const name = rest[key]
-        tmp = tmp?.[name]
+Vue.prototype.$optionalChaining = (obj: any, ...rest: string[]): string | number => {
+    if (rest.includes('attributes') && rest.includes('api_name')) {
+        let tmp = obj
+        for (const key in rest) {
+            const name = rest[key]
+            tmp = tmp?.[name]
+        }
+        if (tmp === 0) return tmp
+        else return tmp || '--'
     }
-    if (tmp === 0) return tmp
-    else return tmp || '--'
+    return '--'
 }
 // 时间戳与时间互相转换
 Vue.prototype.$stampToTime = (timeStamp) => {

@@ -71,7 +71,7 @@
     "vue-property-decorator": "^9.1.2",
     "vue-router": "^3.0.1",
     "vue-simple-uploader": "^0.7.6",
-    "vue-waterfall2": "^1.10.5",
+    "vue-waterfall2": "^1.10.7",
     "vue2-ace-editor": "0.0.15",
     "vuex": "^2.3.1",
     "vxe-table": "^3.6.13",
