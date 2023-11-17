@@ -74,6 +74,7 @@ Vue.prototype.$optionalChaining = (obj: any, ...rest: string[]): string | number
         }
         if (tmp === 0) return tmp
         else return tmp || '--'
+    }
 }
 // 时间戳与时间互相转换
 Vue.prototype.$stampToTime = (timeStamp) => {
