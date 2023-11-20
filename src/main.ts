@@ -66,15 +66,13 @@ Vue.prototype.$t = function(val) {
 }
 // 在template中使用可选链
 Vue.prototype.$optionalChaining = (obj: any, ...rest: string[]): string | number => {
-    if (rest.includes('attributes') && rest.includes('api_name')) {
-        let tmp = obj
-        for (const key in rest) {
-            const name = rest[key]
-            tmp = tmp?.[name]
-        }
-        if (tmp === 0) return tmp
-        else return tmp || '--'
+    let tmp = obj
+    for (const key in rest) {
+        const name = rest[key]
+        tmp = tmp?.[name]
     }
+    if (tmp === 0) return tmp
+    else return tmp || '--'
 }
 // 时间戳与时间互相转换
 Vue.prototype.$stampToTime = (timeStamp) => {
