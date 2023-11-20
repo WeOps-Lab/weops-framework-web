@@ -65,7 +65,7 @@ Vue.prototype.$t = function(val) {
     return val
 }
 // 在template中使用可选链
-Vue.prototype.$optionalChaining = (obj: any, ...rest: string[]): string | number => {
+Vue.prototype.$optionChain = (obj: any, ...rest: string[]): string | number => {
     let tmp = obj
     for (const key in rest) {
         const name = rest[key]
