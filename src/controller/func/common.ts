@@ -57,7 +57,7 @@ Vue.prototype.$DateDisplay = function(days, type, startDate) {
 }
 
 // 时间戳与时间互相转换
-Vue.prototype.stampToTime = (timeStamp) => {
+Vue.prototype.$stampToTime = (timeStamp) => {
     const date = new Date(timeStamp)
     const year = date.getFullYear()
     const month = date.getMonth() + 1

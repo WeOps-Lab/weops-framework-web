@@ -234,7 +234,7 @@
                     }
                 }
             })
-            this.setDefaultActive()
+            this.defaultActive = this.setDefaultActive()
         }
         @Watch('leftNavList', {
             immediate: true,
@@ -257,7 +257,7 @@
                 this.getLogo()
             })
             this.$bus.$on('refreshNav', from => {
-                this.setDefaultActive()
+                this.defaultActive = this.setDefaultActive()
                 this.refreshNavKey = Vue.prototype.$random(5)
                 const topNav = this.menuList.find(item => item.sonMenuIds.includes(from.name) || item.sonMenuIds.includes(from.meta.activeMenu))
                 if (topNav) {
@@ -296,7 +296,7 @@
                     }
                 }
             }
-            this.defaultActive = this.$route.name
+            return this.$route.name
         }
         hidePopover() {
             const userPopover:any = this.$refs['userPopover']
@@ -380,6 +380,7 @@
             } else {
                 this.activeTopNav = item.id
                 if (!item.children) {
+                    this.clickFlag = true
                     this.$router.push({
                         name: this.activeTopNav
                     })

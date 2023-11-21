@@ -7,7 +7,7 @@ import {
     bkSideslider, bkSlider, bkSteps, bkSwitcher, bkTab, bkTabPanel, bkTable, bkTableColumn, bkTagInput, bkTimePicker,
     bkTimeline, bkClickoutside, bkTooltips, bkOverflowTips, bkCascade, bkIcon, bkDivider, bkPopconfirm, bkRadioButton, bkTag, bkBigTree, bkAnimateNumber,
     bkComposeFormItem, bkResizeLayout, bkBadge, bkRoundProgress, bkSpin, bkVirtualScroll, bkTransition, bkColorPicker,
-    bkDiff
+    bkDiff, bkTransfer
 } from 'bk-magic-vue'
 
 // bkDiff 组件体积较大且不是很常用，因此注释掉。如果需要，打开注释即可
@@ -69,7 +69,7 @@ Vue.use(bkTagInput)
 Vue.use(bkTimePicker)
 Vue.use(bkTimeline)
 Vue.use(bkBigTree)
-// Vue.use(bkTransfer)
+Vue.use(bkTransfer)
 Vue.use(bkTree)
 // Vue.use(bkUpload)
 // Vue.use(bkBigTree)
