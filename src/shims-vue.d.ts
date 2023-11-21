@@ -32,7 +32,7 @@ declare module "vue/types/vue" {
         $groupData: any,
         $Copy: any,
         $getSvgIcon: any,
-        $optionalChaining: any,
+        $optionChain: any,
         $stampToTime: any
     }
 }

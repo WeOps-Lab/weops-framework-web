@@ -15,7 +15,7 @@ Vue.prototype.$deepClone = function (val) {
 };
 
 // 在template中使用可选链
-Vue.prototype.$optionalChaining = (obj, ...rest) => {
+Vue.prototype.$optionChain = (obj, ...rest) => {
     let tmp = obj
     for (const key in rest) {
         const name = rest[key]
