@@ -145,7 +145,7 @@ router.beforeEach(async(to, from, next) => {
     if (!completeDynamicRoute && __COMMON_FOLDER_EXISTS__) {
         // @ts-ignore
         const commonFiles = require.context('@/projects/common', true, /\.ts$/)
-        const module = await commonFiles('./router/dealRoute.ts')
+        const module = commonFiles('./router/dealRoute.ts')
         if (module?.default) {
             await module.default.dealRouterByMenu(to, next)
         } else {
@@ -155,7 +155,7 @@ router.beforeEach(async(to, from, next) => {
         // 处理加载外部资源子应用
         // @ts-ignore
         const commonFiles = require.context('@/projects/common', true, /\.ts$/)
-        const module = await commonFiles('./router/dealRoute.ts')
+        const module = commonFiles('./router/dealRoute.ts')
         if (module?.default) {
             await module.default.dealRouterByChildApp(to, from, next, router)
         } else {
