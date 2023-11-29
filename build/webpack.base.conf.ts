@@ -9,6 +9,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const StyleLintPlugin = require('stylelint-webpack-plugin')
 // const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const fs = require('fs')
+const CacheLoader = require('cache-loader')
 
 const projectsDir = path.resolve(__dirname, '../src/projects')
 const projects = fs.readdirSync(projectsDir)
@@ -129,6 +130,12 @@ module.exports = {
                         options: {
                             workers: 2 // 进程2个
                         }
+                    },
+                    {
+                        loader: 'cache-loader',
+                        options: {
+                            cacheDirectory: path.resolve('node_modules/.cache/cache-loader'), // 缓存目录
+                        },
                     },
                     {
                         loader: 'babel-loader',
