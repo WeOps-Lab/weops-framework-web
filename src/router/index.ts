@@ -11,15 +11,6 @@ import {findFirstUrl, findIdsWithNoChildren, hasPathInChildren} from '@/common/d
 //     return originalPush.call(this, location).catch(err => err)
 // }
 
-// 遍历 projects 目录下的所有文件和子目录
-// @ts-ignore
-const files = require.context('@/projects', true, /\.\/[^/]+\/.*/)
-
-// 判断是否包含了 common 文件夹
-const hasCommonFolder = (fileName) => {
-    return files.keys().some(key => key.indexOf(`/${fileName}/`) !== -1)
-}
-
 Vue.use(Router)
 
 // 路由切换时取消请求
@@ -151,20 +142,20 @@ router.beforeEach(async(to, from, next) => {
     const completeDynamicRoute = permission.completeDynamicRoute
     const completeLoadChildApp = menu.completeLoadChildApp
     // 处理其他菜单 如:资产的动态和基础监控的动态菜单时,需要走以下的公共逻辑
-    if (!completeDynamicRoute && hasCommonFolder('common')) {
+    if (!completeDynamicRoute && __COMMON_FOLDER_EXISTS__) {
         // @ts-ignore
-        const commonFiles = require.context('@/projects', true, /\.ts$/)
-        const module = commonFiles('./common/router/dealRoute.ts')
+        const commonFiles = require.context('@/projects/common', true, /\.ts$/)
+        const module = await commonFiles('./router/dealRoute.ts')
         if (module?.default) {
             await module.default.dealRouterByMenu(to, next)
         } else {
             await handleRouteAuthorization(to, from, next)
         }
-    } else if (!completeLoadChildApp && hasCommonFolder('common')) {
+    } else if (!completeLoadChildApp && __COMMON_FOLDER_EXISTS__) {
         // 处理加载外部资源子应用
         // @ts-ignore
-        const commonFiles = require.context('@/projects', true, /\.ts$/)
-        const module = commonFiles('./common/router/dealRoute.ts')
+        const commonFiles = require.context('@/projects/common', true, /\.ts$/)
+        const module = await commonFiles('./router/dealRoute.ts')
         if (module?.default) {
             await module.default.dealRouterByChildApp(to, from, next, router)
         } else {

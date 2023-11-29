@@ -1,5 +1,6 @@
 // @ts-nocheck
 'use strict'
+const fs = require('fs')
 const utils = require('./utils.ts')
 const webpack = require('webpack')
 const config = require('../config/index.ts')
@@ -10,6 +11,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
+const isCommonExists = fs.existsSync(path.join(__dirname, '../src/projects/common'))
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
@@ -52,7 +54,9 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         poll: config.dev.poll
     },
     plugins: [
-
+        new webpack.DefinePlugin({
+            __COMMON_FOLDER_EXISTS__: JSON.stringify(isCommonExists)
+        }),
         // https://github.com/ampedandwired/html-webpack-plugin
         new HtmlWebpackPlugin({
             filename: 'index-dev.html',
