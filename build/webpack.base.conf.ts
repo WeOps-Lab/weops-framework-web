@@ -12,6 +12,7 @@ const fs = require('fs')
 
 const projectsDir = path.resolve(__dirname, '../src/projects')
 const projects = fs.readdirSync(projectsDir)
+const isCommonExists = projects.includes('common')
 const extAlias = {}
 projects.forEach(project => {
   const aliasName = `@${project}`
@@ -103,6 +104,9 @@ module.exports = {
             files: ['src/**/*.{vue,htm,html,css,sss,less,scss,sass}'],
             exclude: [path.resolve(__dirname, '../node_modules/**')]
         }),
+        new webpack.DefinePlugin({
+            __COMMON_FOLDER_EXISTS__: JSON.stringify(isCommonExists)
+        })
         // new HardSourceWebpackPlugin()
     ],
     module: {
