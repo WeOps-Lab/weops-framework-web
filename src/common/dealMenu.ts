@@ -12,18 +12,16 @@ export function removeItemsWithId(items, idsToRemove) {
 }
 // 按照层级顺序检查每层级的第一个是否具有url属性
 export function findFirstUrl(menus) {
-    const firstLevelItem = menus[0]
-    let id = null
-    if (firstLevelItem) {
-        if (firstLevelItem.url) {
-            id = firstLevelItem.id
-        } else if (firstLevelItem.children?.[0]?.url) {
-            id = firstLevelItem.children[0].id
-        } else if (firstLevelItem.children?.[0]?.children?.[0]?.url) {
-            id = firstLevelItem.children[0].children[0].id
+    const traverseMenu = (menu) => {
+        if (menu.children?.length) { // 如果有子菜单
+            return traverseMenu(menu.children[0]) // 递归遍历子菜单的第一个项
         }
+        return menu.id // 返回菜单项的 id
     }
-    return id
+    if (menus.length) {
+        return traverseMenu(menus[0])
+    }
+    return null // 如果没有菜单项，则返回 null 或其他默认值
 }
 
 export function hasPathInChildren(data, path) {
