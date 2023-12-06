@@ -71,7 +71,7 @@ function checkRouteAccess(to, from, next) {
     }
     // 普通用户不能进入服务台管理
     if (!permission.user.is_super && to?.meta?.relatedMenu === 'ServiceDeskManage') {
-        next({path: from.path})
+        next({ path: from.path })
         return
     }
     const isDefinedRoute = frameRouter.some(item => item.name === to?.name)
@@ -83,7 +83,7 @@ function checkRouteAccess(to, from, next) {
     }
     // 判断是否存在在定义的路由中,存在但没有访问权限,则isRead为false,若不在isRead为true,且跳转到404
     const isRead = isDefinedRoute ? isHasPermission : true
-    if (!isRead) {
+    if (!isRead && to.fullPath !== '/') {
         next({ name: '403' })
     }
     dealRouterByPermission(to, from, next)
