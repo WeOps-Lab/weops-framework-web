@@ -56,8 +56,8 @@ const webpackConfig = merge(baseWebpackConfig, {
             // initial: 针对同步 chunk
             // all: 针对所有 chunk
             chunks: 'all',
-            // 表示提取出来的文件在压缩前的最小大小，默认为 30kb
-            minSize: 30000,
+            // 表示提取出来的文件在压缩前的最小大小，默认为 200kb
+            minSize: 200 * 1024,
             // 表示提取出来的文件在压缩前的最大大小，默认为 0，表示不限制最大大小
             maxSize: 0,
             // 表示被引用次数，默认为 1
@@ -67,7 +67,6 @@ const webpackConfig = merge(baseWebpackConfig, {
             // 初始化的时候最多有 3 个请求该 module
             maxInitialRequests: 3,
             // chunk 的名字，如果设成 true，会根据被提取的 chunk 自动生成
-            name: '',
             cacheGroups: {
                 // 提取 chunk-bk-magic-vue 代码块
                 bkMagicVue: {

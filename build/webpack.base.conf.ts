@@ -9,9 +9,11 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const StyleLintPlugin = require('stylelint-webpack-plugin')
 // const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const fs = require('fs')
+const CacheLoader = require('cache-loader')
 
 const projectsDir = path.resolve(__dirname, '../src/projects')
 const projects = fs.readdirSync(projectsDir)
+const isCommonExists = projects.includes('common')
 const extAlias = {}
 projects.forEach(project => {
   const aliasName = `@${project}`
@@ -103,6 +105,9 @@ module.exports = {
             files: ['src/**/*.{vue,htm,html,css,sss,less,scss,sass}'],
             exclude: [path.resolve(__dirname, '../node_modules/**')]
         }),
+        new webpack.DefinePlugin({
+            __COMMON_FOLDER_EXISTS__: JSON.stringify(isCommonExists)
+        })
         // new HardSourceWebpackPlugin()
     ],
     module: {
@@ -125,6 +130,12 @@ module.exports = {
                         options: {
                             workers: 2 // 进程2个
                         }
+                    },
+                    {
+                        loader: 'cache-loader',
+                        options: {
+                            cacheDirectory: path.resolve('node_modules/.cache/cache-loader'), // 缓存目录
+                        },
                     },
                     {
                         loader: 'babel-loader',

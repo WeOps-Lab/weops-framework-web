@@ -17,7 +17,8 @@ module.exports = {
         bkMagicVue: ["bk-magic-vue/dist/bk-magic-vue.min.js"],
         jquery: ['jquery'],
         echarts: ['echarts'],
-        antv: ['@antv/g2', '@antv/data-set']
+        antv: ['@antv/g2', '@antv/data-set', '@antv/g6'],
+        plotly: ['plotly.js-dist-min']
     },
     // 输出文件
     output: {
