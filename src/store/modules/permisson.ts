@@ -79,7 +79,7 @@ function setMenuPurview(list, purviewList) {
         }
         item.purview = !item.sonMenuIds.every(tex => !purviewList.find(nev => nev === tex))
     })
-    return list.filter(item => item.purview)
+    return list.filter(item => item.purview || item.isUrl)
 }
 
 function handleAllMenus(list) {
