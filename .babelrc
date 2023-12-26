@@ -12,7 +12,7 @@
   "plugins": [
       "transform-vue-jsx",
       ["import-bk-magic-vue",{
-          "baseLibName": "bk-magic-vue"
+          "baseLibName": "@canway/cw-magic-vue"
       }],
       [
           "@babel/plugin-transform-runtime",

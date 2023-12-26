@@ -8,7 +8,7 @@ import {
     bkTimeline, bkClickoutside, bkTooltips, bkOverflowTips, bkCascade, bkIcon, bkDivider, bkPopconfirm, bkRadioButton, bkTag, bkBigTree, bkAnimateNumber,
     bkComposeFormItem, bkResizeLayout, bkBadge, bkRoundProgress, bkSpin, bkVirtualScroll, bkTransition, bkColorPicker,
     bkDiff, bkTransfer
-} from 'bk-magic-vue'
+} from '@canway/cw-magic-vue'
 
 // bkDiff 组件体积较大且不是很常用，因此注释掉。如果需要，打开注释即可
 // import { bkDiff } from '@tencent/bk-magic-vue'

@@ -14,7 +14,7 @@ module.exports = {
     entry: {
         // 项目中用到的依赖库文件
         vendors: ['vue/dist/vue.esm.js', 'vuex', 'vue-router', 'axios'],
-        bkMagicVue: ["bk-magic-vue/dist/bk-magic-vue.min.js"],
+        bkMagicVue: ["@canway/cw-magic-vue/dist/bk-magic-vue.min.js"],
         jquery: ['jquery'],
         echarts: ['echarts'],
         antv: ['@antv/g2', '@antv/data-set']

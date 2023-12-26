@@ -4,5 +4,5 @@
  */
 
 import Vue from 'vue'
-import bkMagicVue from 'bk-magic-vue'
+import bkMagicVue from '@canway/cw-magic-vue'
 Vue.use(bkMagicVue)
