@@ -52,7 +52,6 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         poll: config.dev.poll
     },
     plugins: [
-
         // https://github.com/ampedandwired/html-webpack-plugin
         new HtmlWebpackPlugin({
             filename: 'index-dev.html',
