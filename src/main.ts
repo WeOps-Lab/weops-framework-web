@@ -6,7 +6,9 @@ import router from './router'
 import axios from 'axios'
 // 按需全量引入 bk-magic-vue 样式
 import '@canway/cw-magic-vue/dist/bk-magic-vue.min.css'
-import '@/assets/componentLibrary/demand-import'
+import bkMagic from '@canway/cw-magic-vue'
+import theme from './theme.json'
+// import '@/assets/componentLibrary/demand-import'
 // import '@/assets/componentLibrary/fully-import';
 // 几何图
 import * as Echarts from 'echarts'
@@ -36,6 +38,8 @@ Vue.use(Echarts)
 Vue.use(Dire)
 Vue.use(copy)
 Vue.use(Component)
+Vue.use(bkMagic)
+bkMagic.useTheme(theme)
 Vue.prototype.$message = cwMessage
 Vue.prototype.$echarts = Echarts
 // 将API方法绑定到全局
