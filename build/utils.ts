@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-nocheck
 'use strict'
 const path = require('path')
 const config = require('../config/index.ts')
@@ -124,10 +124,11 @@ exports.getDllManifest = () => {
     let plugins = []
     Object.keys({
         vendors: ['vue/dist/vue.esm.js', 'vuex', 'vue-router', 'axios'],
-        bkMagicVue: ["bk-magic-vue/dist/bk-magic-vue.min.js"],
+        bkMagicVue: ["@canway/cw-magic-vue/dist/bk-magic-vue.min.js"],
         jquery: ['jquery'],
         echarts: ['echarts'],
-        antv: ['@antv/g2']
+        antv: ['@antv/g2', '@antv/data-set', '@antv/g6'],
+        plotly: ['plotly.js-dist-min']
     }).forEach((name) => {
         plugins.push(
             new DllReferencePlugin({

@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-nocheck
 'use strict'
 const path = require('path');
 const webpack = require('webpack')
@@ -14,10 +14,11 @@ module.exports = {
     entry: {
         // 项目中用到的依赖库文件
         vendors: ['vue/dist/vue.esm.js', 'vuex', 'vue-router', 'axios'],
-        bkMagicVue: ["bk-magic-vue/dist/bk-magic-vue.min.js"],
+        bkMagicVue: ["@canway/cw-magic-vue/dist/bk-magic-vue.min.js"],
         jquery: ['jquery'],
         echarts: ['echarts'],
-        antv: ['@antv/g2', '@antv/data-set']
+        antv: ['@antv/g2', '@antv/data-set', '@antv/g6'],
+        plotly: ['plotly.js-dist-min']
     },
     // 输出文件
     output: {
@@ -31,6 +32,11 @@ module.exports = {
          是为了防止全局变量冲突。
         */
         library: '_dll_[name]'
+    },
+    resolve: {
+        fallback: {
+            path: require.resolve('path-browserify'),
+        }
     },
     plugins: [
         // 使用插件 DllPlugin
@@ -53,14 +59,14 @@ module.exports = {
                 }
             },
             extractComments: false,
-            cache: true,
+            // cache: true,
             parallel: true,
-            sourceMap: true
+            // sourceMap: true
         }),
 
         new webpack.LoaderOptionsPlugin({
             minimize: true
         }),
-        new webpack.optimize.OccurrenceOrderPlugin()
+        // new webpack.optimize.OccurrenceOrderPlugin()
     ]
 };

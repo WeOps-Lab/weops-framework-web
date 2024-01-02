@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-nocheck
 'use strict'
 require('./check-versions.ts')()
 

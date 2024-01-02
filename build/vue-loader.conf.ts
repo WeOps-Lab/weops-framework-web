@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-nocheck
 'use strict'
 const utils = require('./utils.ts')
 const config = require('../config/index.ts')

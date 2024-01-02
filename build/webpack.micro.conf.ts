@@ -3,7 +3,7 @@ const glob = require('glob')
 const utils = require('./utils.ts')
 const webpack = require('webpack')
 const config = require('../config/index.ts')
-const merge = require('webpack-merge')
+const { merge } = require('webpack-merge')
 const baseWebpackConfig = require('./webpack.base.conf.ts')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 

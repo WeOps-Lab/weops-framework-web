@@ -15,12 +15,6 @@ const state = {
     activationMenu: [],
     updateCustomMenu: false
 }
-// 遍历 projects 目录下的所有文件和子目录
-// @ts-ignore
-const files = require.context('@/projects', true, /\.\/[^/]+\/.*/)
-const hasCommonFolder = (fileName) => {
-    return files.keys().some(key => key.indexOf(`/${fileName}/`) !== -1)
-}
 
 function handleMenuList(userInfo) {
     const handleNeedMenuList = handleActivationMenu(userInfo, 'custom')
@@ -34,10 +28,10 @@ function handleActivationMenu(userInfo, type) {
     const weopsMenu = userInfo?.weops_menu
     if (type === 'custom' && weopsMenu && weopsMenu.length) {
         customMenu = weopsMenu
-        if (hasCommonFolder('common')) {
+        if (__COMMON_FOLDER_EXISTS__) {
             // @ts-ignore
-            const commonFiles = require.context('@/projects', true, /\.ts$/)
-            const module = commonFiles('./common/common/dynamicMenus.ts')
+            const commonFiles = require.context('@/projects/common', true, /\.ts$/)
+            const module = commonFiles('./common/dynamicMenus.ts')
             if (module?.default) {
                 module.default.dealDynamicMenus(JSON.parse(JSON.stringify(menuList)), customMenu)
             }
@@ -184,10 +178,10 @@ const actions = {
                     }
                     commit('setMenuList', handleMenuList(res.data))
                     commit('setActivationMenu', handleActivationMenu(res.data, ''))
-                    if (res.data.applications.includes('chat_ops') && hasCommonFolder('common')) {
+                    if (res.data.applications.includes('chat_ops') && __COMMON_FOLDER_EXISTS__) {
                         // @ts-ignore
-                        const commonFiles = require.context('@/projects', true, /\.ts$/)
-                        const module = commonFiles('./common/common/loadBot.ts')
+                        const commonFiles = require.context('@/projects/common', true, /\.ts$/)
+                        const module = commonFiles('./common/loadBot.ts')
                         if (module?.default) {
                             await module.default.loadChatBot()
                         }

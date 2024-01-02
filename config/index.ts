@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-nocheck
 'use strict'
 // Template version: 1.3.1
 // see http://vuejs-templates.github.io/webpack for documentation.
@@ -24,7 +24,7 @@ module.exports = {
         host: 'dev.weops.com', // can be overwritten by process.env.HOSTcardList
         port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
         autoOpenBrowser: true,
-        errorOverlay: true,
+        errorOverlay: false,
         notifyOnErrors: true,
         poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
 
@@ -41,7 +41,7 @@ module.exports = {
          */
 
         // https://webpack.js.org/configuration/devtool/#development
-        devtool: 'cheap-module-eval-source-map',
+        devtool: 'eval-cheap-module-source-map',
 
         // If you have problems debugging vue-files in devtools,
         // set this to false - it *may* help

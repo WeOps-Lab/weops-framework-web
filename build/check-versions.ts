@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-nocheck
 'use strict'
 const chalk = require('chalk')
 const semver = require('semver')
