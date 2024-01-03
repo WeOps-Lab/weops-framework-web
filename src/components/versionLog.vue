@@ -159,8 +159,4 @@ export default class VersionLog extends Vue {
     height: calc(100vh - 200px) !important;
     padding: 0 0 20px 0 !important;
 }
-
-/deep/.bk-dialog {
-    top: 100px !important;
-}
 </style>
