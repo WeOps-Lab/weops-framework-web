@@ -19,7 +19,7 @@
     "@antv/g2": "^4.1.34",
     "@antv/g6": "^3.7.3",
     "@babel/runtime-corejs3": "^7.23.4",
-    "@canway/cw-magic-vue": "^3.7.17",
+    "@canway/cw-magic-vue": "^3.8.26",
     "@ice/sandbox": "^1.1.3",
     "@tinymce/tinymce-vue": "^3.2.1",
     "@types/pinyin": "^2.8.3",
