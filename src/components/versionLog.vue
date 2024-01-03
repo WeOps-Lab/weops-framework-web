@@ -4,11 +4,11 @@
             v-model="isShow"
             :width="1000"
             :mask-close="true"
-            :draggable="false"
             transfer
             :show-footer="false"
             :scrollable="false"
             :z-index="1000"
+            :height-adaption="true"
             render-directive="if">
             <div class="version-log" v-bkloading="{ isLoading: loading, zIndex: 1001 }">
                 <ul class="version-log-tree">
@@ -153,10 +153,5 @@ export default class VersionLog extends Vue {
         height: calc(100vh - 200px) !important;
         overflow: auto;
     }
-}
-
-/deep/.bk-dialog-body {
-    height: calc(100vh - 200px) !important;
-    padding: 0 0 20px 0 !important;
 }
 </style>
