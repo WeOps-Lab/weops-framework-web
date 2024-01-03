@@ -6,12 +6,9 @@ import {
     bkPopover, bkProcess, bkProgress, bkRadio, bkRadioGroup, bkSearchSelect, bkSelect, bkTableSettingContent,
     bkSideslider, bkSlider, bkSteps, bkSwitcher, bkTab, bkTabPanel, bkTable, bkTableColumn, bkTagInput, bkTimePicker,
     bkTimeline, bkClickoutside, bkTooltips, bkOverflowTips, bkCascade, bkIcon, bkDivider, bkPopconfirm, bkRadioButton, bkTag, bkBigTree, bkAnimateNumber,
-    bkComposeFormItem, bkResizeLayout, bkBadge, bkRoundProgress, bkSpin, bkVirtualScroll, bkTransition, bkColorPicker,
+    bkComposeFormItem, bkResizeLayout, bkBadge, bkRoundProgress, bkSpin, bkVirtualScroll, bkTransition, bkColorPicker, bkDescription, bkDescriptionItem,
     bkDiff, bkTransfer
 } from '@canway/cw-magic-vue'
-
-// bkDiff 组件体积较大且不是很常用，因此注释掉。如果需要，打开注释即可
-// import { bkDiff } from '@tencent/bk-magic-vue'
 
 // components use
 Vue.use(bkColorPicker)
@@ -86,6 +83,8 @@ Vue.use(bkTooltips)
 Vue.use(bkLoading)
 Vue.use(bkOverflowTips)
 Vue.use(bkDiff)
+Vue.use(bkDescription)
+Vue.use(bkDescriptionItem)
 
 export const $error = (message, delay = 3000) => {
     if (message === 'cancelRequest') {
