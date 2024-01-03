@@ -373,6 +373,35 @@ Vue.prototype.$compareFormData = (newValue, oldValue) => {
     return JSON.stringify(newValue) === JSON.stringify(oldValue)
 }
 
+// 应用CMDB依赖
+Vue.prototype.$copy = function(val) {
+    if (!val) return {}
+    return JSON.parse(JSON.stringify(val))
+}
+Vue.prototype.$apply = function(data) {
+    return (<any>Object).assign({}, data, data)
+}
+Vue.prototype.$deepClone = function(val) {
+    if (!val) return {}
+    const a: any = {}
+    a.o = val
+    return JSON.parse(JSON.stringify(a.o))
+}
+
+Vue.prototype.$t = function(val) {
+    return val
+}
+// 在template中使用可选链
+Vue.prototype.$optionChain = (obj: any, ...rest: string[]): string | number => {
+    let tmp = obj
+    for (const key in rest) {
+        const name = rest[key]
+        tmp = tmp?.[name]
+    }
+    if (tmp === 0) return tmp
+    else return tmp || '--'
+}
+
 // 前端通过url下载文件，自定义文件名称
 export function urlDownload(url, fileName = '下载文件') {
     const httpRequest = new XMLHttpRequest()
