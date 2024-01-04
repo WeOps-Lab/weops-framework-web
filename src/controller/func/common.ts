@@ -419,3 +419,38 @@ export function urlDownload(url, fileName = '下载文件') {
     }
     httpRequest.send()
 }
+
+function getFilterValue(val, options) {
+    return val || val === 0 || val === false
+        ? (options.find(item => item.id === val)?.name || '--') : '--'
+}
+
+// 处理标识字段/列表字段值的展示
+Vue.prototype.$getFieldDisplayValue = (record, columns = []) => {
+    const { colKey: key, row } = record
+    // 标识字段（通常为表格第一个字段）为主机名，需要按照主机名（IP）格式展示值
+    const firstKey = columns[+(columns[0]?.type === 'selection')]?.key
+    if (firstKey === key && key === 'bk_host_name') {
+        const ipVal = row['bk_host_innerip']
+        return `${row[key] || ''}${ipVal ? `(${ipVal})` : ''}` || '--'
+    } else {
+        const targetCol = columns.find(el => el.key === key)
+        // 枚举值映射, 其他类型直接展示
+        return targetCol?.type === 'enum' ? getFilterValue(row[key], targetCol.option) : [null, undefined, ''].includes(row[key]) ? '--' : row[key]
+    }
+}
+
+// 根据模型字段生成表头
+Vue.prototype.$getDisplayFieldColumn = (field: Array<Object> | Object = [], extraCol = []) => {
+    const data = Array.isArray(field) ? field : [field]
+    const list = data.map((el, index) => ({
+        key: el.bk_property_id,
+        label: el.bk_property_name,
+        type: el.bk_property_type,
+        fixed: index === 0 ? 'left' : undefined, // 标识字段固定左侧
+        scopedSlots: 'display_field',
+        minWidth: '120px',
+        option: el.bk_property_type === 'enum' ? el.option : undefined
+    }))
+    return list.concat(extraCol)
+}

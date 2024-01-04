@@ -33,6 +33,7 @@ declare module "vue/types/vue" {
         $Copy: any,
         $getSvgIcon: any,
         $optionChain: any,
-        $stampToTime: any
+        $stampToTime: any,
+        $getDisplayFieldColumn: any
     }
 }
