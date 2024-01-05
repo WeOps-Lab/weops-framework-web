@@ -39,7 +39,7 @@
     "hard-source-webpack-plugin": "^0.13.1",
     "html2canvas": "^1.4.1",
     "immutable": "^4.3.0",
-    "jquery": "^3.7.0",
+    "jquery": "^2.2.4",
     "js-md5": "^0.7.3",
     "jspdf": "^2.5.1",
     "jsplumb": "^2.15.6",
