@@ -57,9 +57,6 @@
 .bk-card .bk-card-head-left {
     padding-left: 30px !important;
 }
-.bk-card-head {
-    padding: 0 20px !important;
-}
 .bk-form-item.operator-form-item {
     position: absolute;
 }
