@@ -65,7 +65,6 @@
                     </span>
                     <bk-badge
                         v-if="ticketIconVisible"
-                        style="width: 25px;height: 25px;"
                         class="mr20"
                         theme="success"
                         :val="ticketCount"
@@ -619,8 +618,8 @@
                         max-width: 100px;
                     }
                     .ticket {
-                        width: 25px;
-                        height: 25px;
+                        width: 20px;
+                        height: 20px;
                         cursor: pointer;
                     }
                     .cw-icon-gongdan-xian {
@@ -637,7 +636,7 @@
                         position: relative;
                         cursor: pointer;
                         &:hover {
-                            color: #fff;
+                            color: var(--primary-6);
                         }
                         .version-tips {
                             position: absolute;
@@ -679,8 +678,11 @@
                 align-items: center;
                 .credit-tip {
                     position: absolute;
-                    top: 5px;
-                    left: 140px;
+                    top: 0;
+                    left: 130px;
+                    button {
+                        font-size: 12px !important;
+                    }
                 }
             }
         }
@@ -701,7 +703,7 @@
             width: 100% !important;
             max-width: 100% !important;
             .container-content {
-                background: var(--color-bg-3) !important;
+                background: var(--color-fill-2) !important;
                 border-radius: 0 20px 0 0;
             }
         }
@@ -713,6 +715,35 @@
         display: inline-block;
     }
 
+    .monitor-navigation-admin {
+        width: 100px;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        border-radius: 4px;
+        background: var(--color-bg-white);
+        padding: 6px 0;
+        margin: 0;
+        color: var(--color-text-3);
+        .nav-item {
+            -webkit-box-flex: 0;
+            -ms-flex: 0 0 32px;
+            flex: 0 0 32px;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            padding: 0 20px;
+            list-style: none;
+            &:hover {
+                color: var(--primary-6);
+                cursor: pointer;
+                background-color: var(--color-bg-4);
+            }
+        }
+    }
     .tippy-popper .tippy-tooltip.navigation-message-theme {
         padding: 0;
         border-radius: 0;
@@ -737,6 +768,9 @@
             }
         }
         &.is-actived {
+            .navigation-menu-item-name {
+                font-size: 14px !important;
+            }
             &::before {
                 background-color: var(--primary-6) !important;
                 opacity: 0.15;
