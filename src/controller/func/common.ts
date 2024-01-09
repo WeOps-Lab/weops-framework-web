@@ -1,6 +1,33 @@
 import Vue from 'vue'
 import html2canvas from 'html2canvas'
-
+interface FieldItem {
+    bk_biz_id: number,
+    id: number,
+    bk_supplier_account: string,
+    bk_obj_id: string,
+    bk_property_id: string,
+    bk_property_name: string,
+    bk_property_type: string,
+    option: null,
+    description: string,
+    [key: string]: any
+}
+interface ColumnItem {
+    key?: string,
+    type?: string,
+    label?: string,
+    fixed?: string,
+    scopedSlots?: string,
+    minWidth?: string,
+    option?: undefined | Array<any>
+  }
+interface RecordItem {
+    row: {
+        [key: string]: any
+    },
+    colKey: string,
+    index: number,
+  }
 // 去重
 Vue.prototype.$DupRem = function(list) {
     const newArr = []
@@ -420,30 +447,53 @@ export function urlDownload(url, fileName = '下载文件') {
     httpRequest.send()
 }
 
-function getFilterValue(val, options) {
-    return val || val === 0 || val === false
-        ? (options.find(item => item.id === val)?.name || '--') : '--'
-}
 
-// 处理标识字段/列表字段值的展示
-Vue.prototype.$getFieldDisplayValue = (record, columns = []) => {
+function getDisplayValue(value, targetCol: ColumnItem = {}) {
+    switch (targetCol.type) {
+        case 'time':
+            return value ? Vue.prototype.$FormatTime('yyyy-MM-dd hh:mm:ss', value) : '--'
+        case 'bool':
+            return value ? '是' : '否'
+        case 'enum':
+            return value || value === 0 || value === false
+            ? (targetCol.option.find(item => item.id === value)?.name || '--') : '--'
+        default:
+            return [null, undefined, ''].includes(value) ? '--' : value
+    }
+}
+/**
+ * 处理模型标识字段/列表字段值的展示
+ *
+ * @param {RecordItem} record 表格插槽行信息
+ * @param {ColumnItem[]} columns 表格插槽全部列数据，用于根据当前列类型及列索引展示数据
+ *
+ * @return {string|number} 格式化后的数据内容
+ **/
+Vue.prototype.$getFieldDisplayValue = (record: RecordItem, columns: ColumnItem[] = []) => {
     const { colKey: key, row } = record
-    // 标识字段（通常为表格第一个字段）为主机名，需要按照主机名（IP）格式展示值
+    // 标识字段（通常为表格第一或第二个字段）为主机名，则需要按照主机名（IP）格式展示值
     const firstKey = columns[+(columns[0]?.type === 'selection')]?.key
     if (firstKey === key && key === 'bk_host_name') {
         const ipVal = row['bk_host_innerip']
         return `${row[key] || ''}${ipVal ? `(${ipVal})` : ''}` || '--'
     } else {
-        const targetCol = columns.find(el => el.key === key)
-        // 枚举值映射, 其他类型直接展示
-        return targetCol?.type === 'enum' ? getFilterValue(row[key], targetCol.option) : [null, undefined, ''].includes(row[key]) ? '--' : row[key]
+        const targetCol = columns?.find(el => el.key === key)
+        return getDisplayValue(row[key], targetCol)
     }
 }
 
-// 根据模型字段生成表头
-Vue.prototype.$getDisplayFieldColumn = (field: Array<Object> | Object = [], extraCol = []) => {
+/**
+ * 根据模型字段返回表格表头列表
+ *
+ * @param {FieldItem[] | FieldItem} field 模型的标识字段对象/展示字段列表
+ * @param {ColumnItem[]} extraCol 需要额外插入的列列表
+ *
+ * @return {ColumnItem[]} 包含标识字段/展示字段的表格表头列表
+ **/
+Vue.prototype.$getDisplayFieldColumn = (field: FieldItem[] | FieldItem = [],  extraCol: ColumnItem[] = []) => {
     const data = Array.isArray(field) ? field : [field]
-    const list = data.map((el, index) => ({
+    const list: ColumnItem[] = data.filter(el => !extraCol.find(item => item.key === el.bk_property_id ))
+    .map((el, index) => ({
         key: el.bk_property_id,
         label: el.bk_property_name,
         type: el.bk_property_type,
