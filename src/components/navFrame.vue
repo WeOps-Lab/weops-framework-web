@@ -703,7 +703,7 @@
             width: 100% !important;
             max-width: 100% !important;
             .container-content {
-                background: var(--color-fill-2) !important;
+                background: var(--color-bg-3) !important;
                 border-radius: 0 20px 0 0;
             }
         }
