@@ -76,6 +76,7 @@
     z-index: 99;
     min-height: 50px;
     line-height: 50px;
+    border-radius: 0 20px 0 0;
     .header-sub-title {
         display: flex;
         font-size: 16px;
