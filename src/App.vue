@@ -73,6 +73,7 @@ html, body {
     height: 100%;
     width: 100%;
     font-size: 14px;
+    background-color: var(--color-fill-3) !important;
 }
 
 ::-webkit-scrollbar {
