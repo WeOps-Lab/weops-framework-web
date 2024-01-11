@@ -39,6 +39,7 @@
                     <bk-popover theme="light navigation-message" :arrow="false" offset="-20, 10" placement="bottom-start"
                         :tippy-options="{ 'hideOnClick': false }" ref="userPopover">
                         <div class="header-user is-left">
+                            <span class="name-first-word">{{ user.chname.charAt(0) }}</span>
                             <span class="show-name hide-text" v-bk-overflow-tips>{{ user.chname }}</span>
                             <i class="bk-icon icon-down-shape"></i>
                         </div>
@@ -618,9 +619,10 @@
                         max-width: 100px;
                     }
                     .ticket {
-                        width: 20px;
-                        height: 20px;
+                        width: 16px;
+                        height: 16px;
                         cursor: pointer;
+                        vertical-align: bottom;
                     }
                     .cw-icon-gongdan-xian {
                         font-size: 30px;
@@ -657,6 +659,16 @@
                     justify-content: center;
                     color: var(--color-text-2);
                     margin-left: 8px;
+                    .name-first-word {
+                        width: 24px;
+                        height: 24px;
+                        border-radius: 50%;
+                        background-color: var(--primary-6);
+                        margin-right: 8px;
+                        text-align: center;
+                        line-height: 22px;
+                        color: #fff;
+                    }
                     &:hover {
                         cursor: pointer;
                         color: #D3D9E4;
