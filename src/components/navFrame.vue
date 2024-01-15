@@ -7,7 +7,10 @@
         navigation-type="top-bottom"
         :need-menu="needLeftNav"
         :head-height="headerHight"
-        :class="{ 'navigation-other-wrapper': user.expired_day <= user.notify_day }"
+        :class="{
+            'navigation-other-wrapper': user.expired_day <= user.notify_day,
+            'active-menu-no-children': !global.activeMenuHasChildren
+        }"
         @toggle="handleToggle">
         <template slot="side-icon">
             <div class="monitor-logo" @click="goHome">
@@ -39,7 +42,7 @@
                     <bk-popover theme="light navigation-message" :arrow="false" offset="-20, 10" placement="bottom-start"
                         :tippy-options="{ 'hideOnClick': false }" ref="userPopover">
                         <div class="header-user is-left">
-                            <span class="name-first-word">{{ user.chname.charAt(0) }}</span>
+                            <span class="name-first-word">{{ firstWordByUserName }}</span>
                             <span class="show-name hide-text" v-bk-overflow-tips>{{ user.chname }}</span>
                             <i class="bk-icon icon-down-shape"></i>
                         </div>
@@ -136,7 +139,8 @@
         },
         computed: {
             ...mapState({
-                permission: item => item.permission
+                permission: item => item.permission,
+                global: item => item.global
             })
         }
     })
@@ -199,6 +203,9 @@
         get headerHight() {
             return this.$route.name === 'RemoteConnect' ? '0' : '52'
         }
+        get firstWordByUserName() {
+            return this.user.chname?.charAt(0)
+        }
         @Watch('$route', {
             immediate: true,
             deep: true
@@ -240,6 +247,7 @@
             deep: true
         })
         onLeftNavListChanged(val) {
+            this.$store.commit('setActiveMenuHasChildren', !!val?.length)
             // 判断用户不是超管组内的人员，则不展示系统管理的界面[角色管理，用户管理，通知渠道，服务台管理]
             if (!this.user.is_super) {
                 const ONLY_ADMIN_HAS_MENUS = ['ServiceDeskManage', 'AutoProcessManage', 'SysRole', 'SysUser', 'NoticeWays']
@@ -805,6 +813,12 @@
             .top-nav {
                 max-width: calc(100vw - 530px);
             }
+        }
+    }
+    // 如果菜单没有二级菜单了,需要展示左边的圆角
+    .active-menu-no-children {
+        .container-content {
+            border-radius: 20px 20px 0 0 !important;
         }
     }
     /* 当屏幕宽度小于或等于 1280 像素时 */

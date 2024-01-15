@@ -54,9 +54,6 @@
     }
 </script>
 <style lang="scss">
-.bk-card .bk-card-head-left {
-    padding-left: 30px !important;
-}
 .bk-form-item.operator-form-item {
     position: absolute;
 }
