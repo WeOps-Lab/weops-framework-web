@@ -13,7 +13,8 @@ const state = {
     leftMenus: [],
     reloadLeftMenu: false,
     toggleIstrue: '',
-    bizList: []
+    bizList: [],
+    activeMenuHasChildren: true
 }
 const getters = {
     appName: state => state.appName,
@@ -28,7 +29,7 @@ const getters = {
     v: state => state.loginInfo.cc_api_version, // 用于区分导入导出 v4 和 v3 版本
     userList: state => state.userList,
     userMap: state => {
-        let m = {}
+        const m = {}
         if (state.userList) {
             state.userList.forEach(user => {
                 m[user.english_name] = user
@@ -46,6 +47,7 @@ const getters = {
     leftMenus: state => state.leftMenus,
     reloadLeftMenu: state => state.reloadLeftMenu,
     bizList: state => state.bizList,
+    activeMenuHasChildren: state => state.activeMenuHasChildren
 }
 const mutations = {
     setAppName(state, data) {
@@ -74,6 +76,9 @@ const mutations = {
     },
     setBizList(state, data) {
         state.bizList = data
+    },
+    setActiveMenuHasChildren(state, data) {
+        state.activeMenuHasChildren = data
     }
 }
 const actions = {
