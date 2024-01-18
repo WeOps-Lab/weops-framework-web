@@ -68,15 +68,12 @@
 
 <style scoped lang="scss">
 .header-sub-container {
-    width: calc(100% + 48px);
-    margin: -28px 0 20px -24px;
-    padding: 0 20px;
+    width: 100%;
     background: #fff;
     position: sticky;
     z-index: 99;
     min-height: 50px;
     line-height: 50px;
-    border-radius: 0 20px 0 0;
     .header-sub-title {
         display: flex;
         font-size: 16px;

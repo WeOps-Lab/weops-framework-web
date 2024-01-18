@@ -31,8 +31,8 @@
 
 <style lang="scss" scoped>
 #main-container {
-    max-height: calc(100vh - 72px);
-    height: calc(100vh - 72px);
+    max-height: calc(100vh - 35px);
+    height: calc(100vh - 35px);
     padding-bottom: 20px;
     box-sizing: border-box;
 }

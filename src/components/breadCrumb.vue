@@ -127,12 +127,11 @@
     font-size: 14px;
     font-weight: 400;
     color: $cw-color-text-3;
-    width: calc(100% + 48px);
-    margin: -20px 0 20px -24px;
+    width: 100%;
     padding: 10px 14px;
     background: #fff;
     position: sticky;
-    top: -20px;
+    top: 0;
     z-index: 99;
     .icon-arrows-left {
         font-size: 28px !important;

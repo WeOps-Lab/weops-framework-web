@@ -723,8 +723,13 @@
             width: 100% !important;
             max-width: 100% !important;
             .container-content {
-                background: var(--color-bg-3) !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                height: 100% !important;
+                max-height: 100% !important;
+                background: transparent !important;
                 border-radius: 0 20px 0 0;
+                padding: 0 !important;
             }
         }
     }
