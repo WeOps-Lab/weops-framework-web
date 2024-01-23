@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import html2canvas from 'html2canvas'
+import { getValueFormat } from '@monitorAlarm/controller/valueFormats'
 interface FieldItem {
     bk_biz_id: number,
     id: number,
@@ -19,7 +20,8 @@ interface ColumnItem {
     fixed?: string,
     scopedSlots?: string,
     minWidth?: string,
-    option?: undefined | Array<any>
+    option?: undefined | Array<any>,
+    unit?: string
   }
 interface RecordItem {
     row: {
@@ -28,6 +30,10 @@ interface RecordItem {
     colKey: string,
     index: number,
   }
+
+interface FieldUnitMap {
+    [key: string]: string
+}
 // 去重
 Vue.prototype.$DupRem = function(list) {
     const newArr = []
@@ -458,6 +464,11 @@ function getDisplayValue(value, targetCol: ColumnItem = {}) {
             return value || value === 0 || value === false
             ? (targetCol.option.find(item => item.id === value)?.name || '--') : '--'
         default:
+            const { unit } = targetCol
+            if (unit && (value || typeof value === 'number')) {
+                const { text, suffix } = getValueFormat(unit)(value, 2)
+                return `${text}${suffix || ''}`
+            }
             return [null, undefined, ''].includes(value) ? '--' : value
     }
 }
@@ -487,10 +498,11 @@ Vue.prototype.$getFieldDisplayValue = (record: RecordItem, columns: ColumnItem[]
  *
  * @param {FieldItem[] | FieldItem} field 模型的标识字段对象/展示字段列表
  * @param {ColumnItem[]} extraCol 需要额外插入的列列表
+ * @param {FieldUnitMap} fieldUnitMap 当前对象单位管理的数据
  *
  * @return {ColumnItem[]} 包含标识字段/展示字段的表格表头列表
  **/
-Vue.prototype.$getDisplayFieldColumn = (field: FieldItem[] | FieldItem = [],  extraCol: ColumnItem[] = []) => {
+Vue.prototype.$getDisplayFieldColumn = (field: FieldItem[] | FieldItem = [],  extraCol: ColumnItem[] = [], fieldUnitMap: FieldUnitMap = {}) => {
     const data = Array.isArray(field) ? field : [field]
     const list: ColumnItem[] = data.filter(el => !extraCol.find(item => item.key === el.bk_property_id ))
     .map((el, index) => ({
@@ -500,7 +512,8 @@ Vue.prototype.$getDisplayFieldColumn = (field: FieldItem[] | FieldItem = [],  ex
         fixed: index === 0 ? 'left' : undefined, // 标识字段固定左侧
         scopedSlots: 'display_field',
         minWidth: '120px',
-        option: el.bk_property_type === 'enum' ? el.option : undefined
+        option: el.bk_property_type === 'enum' ? el.option : undefined,
+        unit: fieldUnitMap[el.bk_property_id]
     }))
     return list.concat(extraCol)
 }
