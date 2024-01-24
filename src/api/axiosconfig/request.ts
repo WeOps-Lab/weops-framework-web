@@ -21,8 +21,7 @@ const getToken = () => {
 const axiosInstance = axios.create({
     xsrfCookieName: 'backend_csrftoken',
     xsrfHeaderName: 'X-CSRFToken',
-    withCredentials: true,
-    baseURL: window['siteUrl']
+    withCredentials: true
 })
 
 /**
