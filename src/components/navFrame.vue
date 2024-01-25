@@ -788,6 +788,9 @@
     .navigation-menu-item {
         background-color: var(--color-fill-2) !important;
         &:hover {
+            .navigation-menu-item-name {
+                font-size: 14px !important;
+            }
             &::before {
                 background-color: var(--color-fill-3) !important;
             }
