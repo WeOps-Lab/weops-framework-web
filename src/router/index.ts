@@ -65,6 +65,14 @@ function checkRouteAccess(to, from, next) {
         next({ path: from.path })
         return
     }
+    // 普通用户进入详情前先动态添加parentIds,挪动到该位置是解决第一次进入详情403的问题
+    if (!permission.user.is_super && to.name === 'InstanceDetails') {
+        const parentIds = to.meta.parentIds || []
+        const dynamicMenus = store.state.menu.dynamicMenus
+        for (const k in dynamicMenus.classification) {
+            !parentIds.includes(k) && parentIds.push(k)
+        }
+    }
     const isDefinedRoute = frameRouter.some(item => item.name === to?.name)
     const ids = findIdsWithNoChildren(permission.menuList).concat(['404', '403', 'AuthPermissionFail'])
     const isHasPermission = ids.includes(to.name) || (to?.meta?.parentIds || []).filter(r => ids.includes(r)).length || ids.includes(to?.meta?.relatedMenu)
@@ -119,14 +127,6 @@ function dealRouterByPermission(to, from, next) {
                     } else {
                         const defaultName = findFirstUrl(menuList)
                         next({ name: defaultName })
-                    }
-                }
-            } else {
-                const parentIds = to.meta.parentIds || []
-                if (to.name === 'InstanceDetails') {
-                    const dynamicMenus = store.state.menu.dynamicMenus
-                    for (const k in dynamicMenus.classification) {
-                        parentIds.push(k)
                     }
                 }
             }
