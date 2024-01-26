@@ -38,64 +38,64 @@
 <script lang="ts">
     import { Vue, Component, Watch } from 'vue-property-decorator'
 
-@Component({
-    components: {}
-})
-export default class VersionLog extends Vue {
-    isShow: boolean = false
-    versionList: Array<any> = []
-    activeItem: any = {}
-    versionDetail: string = ''
-    loading: boolean = false
-
-    @Watch('activeItem', {
-        deep: true
+    @Component({
+        components: {}
     })
-    onActiveItemChange() {
-        this.getversionLogDetail()
-    }
-    show() {
-        this.isShow = true
-        this.getVersionLogsList()
-    }
-    selectNode(item) {
-        this.activeItem = item
-    }
-    async getVersionLogsList() {
-        this.loading = true
-        try {
-            const res = await this.$api.Server.getVersionLogsList()
-            if (!res.result) {
-                return
-            }
-            this.versionList = res.data.map(item => {
-                return {
-                    version: item.at() || '--',
-                    time: item.at(-1) || '--'
+    export default class VersionLog extends Vue {
+        isShow: boolean = false
+        versionList: Array<any> = []
+        activeItem: any = {}
+        versionDetail: string = ''
+        loading: boolean = false
+
+        @Watch('activeItem', {
+            deep: true
+        })
+        onActiveItemChange() {
+            this.getversionLogDetail()
+        }
+        show() {
+            this.isShow = true
+            this.getVersionLogsList()
+        }
+        selectNode(item) {
+            this.activeItem = item
+        }
+        async getVersionLogsList() {
+            this.loading = true
+            try {
+                const res = await this.$api.Server.getVersionLogsList()
+                if (!res.result) {
+                    return
                 }
-            })
-            this.activeItem = this.versionList.at() || {}
-        } finally {
-            this.loading = false
+                this.versionList = res.data.map(item => {
+                    return {
+                        version: item.at() || '--',
+                        time: item.at(-1) || '--'
+                    }
+                })
+                this.activeItem = this.versionList.at() || {}
+            } finally {
+                this.loading = false
+            }
+        }
+        async getversionLogDetail() {
+            this.loading = true
+            try {
+                const params = {
+                    log_version: this.activeItem.version
+                }
+                const res = await this.$api.Server.getversionLogDetail(params)
+                if (!res.result) {
+                    this.versionDetail = ''
+                    return
+                }
+                this.versionDetail = res.data
+            } finally {
+                this.loading = false
+            }
         }
     }
-    async getversionLogDetail() {
-        this.loading = true
-        try {
-            const params = {
-                log_version: this.activeItem.version
-            }
-            const res = await this.$api.Server.getversionLogDetail(params)
-            if (!res.result) {
-                this.versionDetail = ''
-                return
-            }
-            this.versionDetail = res.data
-        } finally {
-            this.loading = false
-        }
-    }
-}
 </script>
 
 <style lang="scss" scoped>
@@ -152,6 +152,17 @@ export default class VersionLog extends Vue {
         padding: 0 10px 6px 10px;
         height: calc(100vh - 200px) !important;
         overflow: auto;
+        /deep/ table {
+            width: 100%;
+            border-collapse: collapse;
+            th, td {
+                border: 1px solid #eee;
+                padding: 10px;
+            }
+            th {
+                text-align: left;
+            }
+        }
     }
 }
 </style>

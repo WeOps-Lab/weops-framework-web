@@ -18,7 +18,8 @@
                 <div class="credit-tip" v-if="user.expired_day <= user.notify_day">
                     <bk-popconfirm
                         :content="`WeOps许可将于${user.expired_day > 0 ? user.expired_day + '天后' : '今天'}到期，为保障正常运行，请联系您的专属客户经理及时续期。`"
-                        width="280"
+                        :width="280"
+                        theme="error"
                         ext-cls="pop-custom">
                         <bk-button size="small" theme="danger" @click.stop="linkToCredit">
                             即将到期
