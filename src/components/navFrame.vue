@@ -8,14 +8,14 @@
         :need-menu="needLeftNav"
         :head-height="headerHight"
         :class="{
-            'navigation-other-wrapper': user.expired_day <= user.notify_day,
+            'navigation-other-wrapper': showCreditTip,
             'active-menu-no-children': !global.activeMenuHasChildren
         }"
         @toggle="handleToggle">
         <template slot="side-icon">
             <div class="monitor-logo" @click="goHome">
                 <img :src="'data:image/png;base64,' + nav.logo" height="40" width="40" :alt="'logo图片'">
-                <div class="credit-tip" v-if="user.expired_day <= user.notify_day">
+                <div class="credit-tip" v-if="showCreditTip">
                     <bk-popconfirm
                         :content="`WeOps许可将于${user.expired_day > 0 ? user.expired_day + '天后' : '今天'}到期，为保障正常运行，请联系您的专属客户经理及时续期。`"
                         :width="280"
@@ -206,6 +206,10 @@
         }
         get firstWordByUserName() {
             return this.user.chname?.charAt(0)
+        }
+        // 解决在远程管理单独界面,即将到期按钮遮挡的问题,不显示
+        get showCreditTip() {
+            return this.$route.name !== 'RemoteConnect' && this.user.expired_day <= this.user.notify_day
         }
         @Watch('$route', {
             immediate: true,
