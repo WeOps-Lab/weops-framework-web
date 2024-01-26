@@ -104,5 +104,4 @@ export const deletes = (url, params, opts = {}) =>
 export const patch = (url, params, opts = {}) =>
     getPromise('patch', url, params, opts)
 
-export const reUrl = window['siteUrl']
-export const kacUrl = process.env.NODE_ENV === 'production' ? '/o/cw_uac_saas/' : '/kacapi'
+export const reUrl = ''
