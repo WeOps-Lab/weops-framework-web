@@ -159,6 +159,69 @@ export const deepClone = (obj, hash = new WeakMap()) => {
     }
     return Object.assign(result, ...Object.keys(obj).map(key => ({[key]: deepClone(obj[key], hash)})))
 }
+// 转换策略的时间
+Vue.prototype.$transferTime = function(row) {
+    if (row.period === 'once') {
+        return `单次:${row.open_datetime_once} 至 ${row.close_datetime_once}`
+    } else if (row.period === 'everyday') {
+        return `每天,${row.open_clock_time} ~ ${row.close_clock_time}`
+    } else if (row.period === 'every_week') {
+        const dayStr = []
+        row.day_for_week.split(',').forEach(day => {
+            switch (day) {
+                case '1':
+                    return dayStr.push('星期一')
+                case '2':
+                    return dayStr.push('星期二')
+                case '3':
+                    return dayStr.push('星期三')
+                case '4':
+                    return dayStr.push('星期四')
+                case '5':
+                    return dayStr.push('星期五')
+                case '6':
+                    return dayStr.push('星期六')
+                case '7':
+                    return dayStr.push('星期天')
+            }
+        })
+        return `每周: ${dayStr.join('、')} ${row.open_clock_time} 至 ${row.close_clock_time}`
+    } else if (row.period === 'every_month') {
+        const monthStr = []
+        row.day_for_month.split(',').forEach(day => {
+            monthStr.push(`${day} 号`)
+        })
+        return `每月: ${monthStr.join('、')} ${row.open_clock_time} 至 ${row.close_clock_time}`
+    }
+}
+// 抑制状态判断
+Vue.prototype.$statusJudge = function(row) {
+    const date = new Date()
+    const week = date.getDay()
+    const day = date.getDate()
+    const hour = date.getHours()
+    const minute = date.getMinutes()
+    const second = date.getSeconds()
+    const clockTime = (hour < 10 ? '0' + hour : hour) + ':' + (minute < 10 ? '0' + minute : minute) + (second < 10 ? '0' + second : second)
+    const now = this.$formatDate(date)
+    if (row.is_enable) {
+        if (row.period === 'everyday') {
+            return row.open_clock_time <= clockTime && clockTime <= row.close_clock_time
+        } else if (row.period === 'every_week') {
+            return row.day_for_week.search(String(week)) !== -1 && (row.open_clock_time <= clockTime && clockTime <= row.close_clock_time)
+        } else if (row.period === 'once') {
+            const openTimeStamp = new Date(row.open_datetime_once.replace(/-/g, '/')).getTime()
+            const closeTimeStamp = new Date(row.close_datetime_once.replace(/-/g, '/')).getTime()
+            const nowStamp = new Date(now.replace(/-/g, '/')).getTime()
+            return openTimeStamp <= nowStamp && nowStamp <= closeTimeStamp
+        } else if (row.period === 'every_month') {
+            const monthArr = row.day_for_month.split(',')
+            return monthArr.indexOf(String(day)) !== -1 && (row.open_clock_time <= clockTime && clockTime <= row.close_clock_time)
+        }
+    } else {
+        return false
+    }
+}
 export const transformDataKey = (data = {}, flag = false) => {
     if (!['[object Array]', '[object Object]'].includes(Object.prototype.toString.call(data))) return data
     const result = {}

@@ -34,6 +34,8 @@ declare module "vue/types/vue" {
         $getSvgIcon: any,
         $optionChain: any,
         $stampToTime: any,
-        $getDisplayFieldColumn: any
+        $getDisplayFieldColumn: any,
+        $transferTime: any,
+        $statusJudge: any
     }
 }
