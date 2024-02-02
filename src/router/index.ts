@@ -50,6 +50,9 @@ const handleRouteAuthorization = async(to, from, next) => {
     if (!(allUserData && JSON.stringify(allUserData).length)) {
         await store.dispatch('getAllUserList')
     }
+    if (!store.state.resource.organizationList.length) {
+        store.dispatch('getOrganInfo')
+    }
     checkRouteAccess(to, from, next)
 }
 
