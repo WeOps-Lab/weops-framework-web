@@ -141,9 +141,7 @@ function dealRouterByPermission(to, from, next) {
 router.beforeEach(async(to, from, next) => {
     await cancelRequest()
     const permission = store.state.permission
-    const menu = store.state.menu
     const completeDynamicRoute = permission.completeDynamicRoute
-    const completeLoadChildApp = menu.completeLoadChildApp
     // 处理其他菜单 如:资产的动态和基础监控的动态菜单时,需要走以下的公共逻辑
     if (!completeDynamicRoute && __COMMON_FOLDER_EXISTS__) {
         // @ts-ignore
@@ -151,16 +149,6 @@ router.beforeEach(async(to, from, next) => {
         const module = commonFiles('./router/dealRoute.ts')
         if (module?.default) {
             await module.default.dealRouterByMenu(to, next)
-        } else {
-            await handleRouteAuthorization(to, from, next)
-        }
-    } else if (!completeLoadChildApp && __COMMON_FOLDER_EXISTS__) {
-        // 处理加载外部资源子应用
-        // @ts-ignore
-        const commonFiles = require.context('@/projects/common', true, /\.ts$/)
-        const module = commonFiles('./router/dealRoute.ts')
-        if (module?.default) {
-            await module.default.dealRouterByChildApp(to, from, next, router)
         } else {
             await handleRouteAuthorization(to, from, next)
         }
