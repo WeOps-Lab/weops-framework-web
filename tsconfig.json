@@ -19,6 +19,7 @@
 //            "@knowledgeBase/*": ["src/projects/knowledgeBase/*"],
 //            "@serveDesk/*": ["src/projects/serveDesk/*"],
 //            "@monitorAlarm/*": ["src/projects/monitorAlarm/*"],
+//            "@dashBoard/*": ["src/projects/dashBoard/*"],
 //            "@operationalAnalysis/*": ["src/projects/operationalAnalysis/*"],
 //            "@remote/*": ["src/projects/remote/*"]
         },
