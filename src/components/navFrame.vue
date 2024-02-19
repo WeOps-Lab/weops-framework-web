@@ -813,6 +813,9 @@
         .navigation-sbmenu-title {
             background-color: var(--color-fill-2) !important;
         }
+        .navigation-sbmenu-title {
+            margin: 8px 0 !important;
+        }
         .cw-icon {
             text-align: left !important;
         }
