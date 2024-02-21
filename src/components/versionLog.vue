@@ -126,7 +126,7 @@
                 }
 
                 .version {
-                    color: #313238;
+                    color: var(--color-text-1);
                     font-size: 16px;
                     overflow: hidden;
                     white-space: nowrap;

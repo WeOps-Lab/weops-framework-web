@@ -129,7 +129,7 @@
     color: $cw-color-text-3;
     width: 100%;
     padding: 10px 14px;
-    background: #fff;
+    background-color: var(--color-bg-1);
     position: sticky;
     top: 0;
     z-index: 99;
@@ -151,7 +151,7 @@
                 font-size: 18px !important;
             }
             &:last-child {
-                color: $cw-color-text-0;
+                color: var(--color-text-1);
             }
             .breadcrumb-active {
                 cursor: pointer;

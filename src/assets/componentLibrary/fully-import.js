@@ -5,9 +5,9 @@
 
 import Vue from 'vue'
 import bkMagicVue from '@canway/cw-magic-vue'
-import theme from '@/theme.json'
+// import theme from '@/theme.json'
 Vue.use(bkMagicVue)
-bkMagicVue.useTheme(theme)
+// bkMagicVue.useTheme(theme)
 
 export const $error = (message, delay = 3000) => {
     if (message === 'cancelRequest') {

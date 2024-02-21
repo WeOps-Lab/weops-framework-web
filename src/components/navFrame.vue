@@ -76,6 +76,14 @@
                         :max="99">
                         <img class="ticket" src="@/assets/svg/ticket.svg" alt="ticket" @click="goTicket" />
                     </bk-badge>
+                    <span class="switch-theme">
+                        <svg v-if="theme === 'light'" t="1692857174898" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="12661" width="20" height="20" @click="handleSwitch('dark')">
+                            <path d="M167.86 798.72l57.34 57.34 73.31-72.9-57.7-57.76m230.48 232.56h81.45V837.89h-81.45m40.73-570.18C377.15 267.84 267.84 377.13 267.7 512c0.11 134.89 109.41 244.22 244.3 244.36 134.92-0.1 244.27-109.44 244.38-244.36 0.03-134.93-109.32-244.33-244.25-244.36H512m325.82 285.09H960v-81.46H837.82M725.41 783.24l73.31 72.9 57.34-57.34-72.81-73.38m72.9-500.14l-57.34-57.34-73.31 72.9 57.83 57.83M552.73 66.04h-81.45V186.1h81.45M186.18 471.27H64v81.45h122.18m112.41-311.98l-73.31-72.9-57.34 57.34 72.88 73.4 57.77-57.84z" p-id="12662"></path>
+                        </svg>
+                        <svg v-else t="1692857384406" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="13765" width="20" height="20" @click="handleSwitch('light')">
+                            <path d="M593.054 120.217C483.656 148.739 402.91 248.212 402.91 366.546c0 140.582 113.962 254.544 254.544 254.544 118.334 0 217.808-80.746 246.328-190.144C909.17 457.12 912 484.23 912 512c0 220.914-179.086 400-400 400S112 732.914 112 512s179.086-400 400-400c27.77 0 54.88 2.83 81.054 8.217z" fill="#fff" fill-opacity=".65" p-id="13766"></path>
+                        </svg>
+                    </span>
                 </div>
             </div>
         </template>
@@ -87,6 +95,8 @@
                 :toggle-active="nav.toggle"
                 style="cursor: default;"
                 :key="refreshNavKey"
+                :item-default-color="'var(--nav-side-item-text-color)'"
+                :item-hover-color="'var(--nav-side-item-text-color)'"
                 @select="handleSelect">
                 <bk-navigation-menu-item
                     v-for="item in leftNavList"
@@ -132,6 +142,9 @@
     import VersionLog from './versionLog.vue'
     import { mapState } from 'vuex'
     import { removeItemsWithId } from '@/common/dealMenu'
+    import bkMagic from '@canway/cw-magic-vue'
+    import themeDark from '@/assets/componentLibrary/theme-dark.json'
+    import themeLight from '@/assets/componentLibrary/theme-light.json'
     @Component({
         components: {
             Container,
@@ -146,6 +159,7 @@
         }
     })
     export default class NavFrame extends Vue {
+        theme = window.localStorage.getItem('uiTheme') || 'light'
         defaultOpen: boolean = false
         renderKey: number = 0
         clickFlag: boolean = false
@@ -260,6 +274,7 @@
             }
         }
         created() {
+            bkMagic.useTheme(this.theme === 'light' ? themeLight : themeDark)
             if (document.body.clientWidth > 1440) {
                 this.defaultOpen = true
             }
@@ -283,6 +298,11 @@
         }
         beforeDestroy() {
             this.$bus.$off('updateLogo')
+        }
+        handleSwitch(val) {
+            this.theme = val
+            bkMagic.useTheme(val === 'dark' ? themeDark : themeLight)
+            window.localStorage.setItem('uiTheme', val)
         }
         checkVersionLog() {
             const versionLog: any = this.$refs.versionLog
@@ -478,7 +498,8 @@
     .bk-navigation {
         width: 100% !important;
         .bk-navigation-header {
-            background-color: var(--color-fill-3) !important;
+            background-color: var(--nav-header-bg) !important;
+            border-bottom: 1px solid var(--nav-header-bottom-border-color);
             .bk-navigation-title {
                 flex: 0 0 200px !important;
                 .title-desc {
@@ -607,7 +628,7 @@
                             span {
                                 &:hover {
                                     cursor: pointer;
-                                    background: var(--color-fill-2);
+                                    background: var(--color-fill-3);
                                     border-radius: 4px;
                                 }
                             }
@@ -658,6 +679,13 @@
                             font-size: 13px;
                             right: -13px;
                             top: -4px;
+                        }
+                    }
+                    .switch-theme {
+                        margin: 0 20px;
+                        padding-top: 8px;
+                        svg {
+                            cursor: pointer;
                         }
                     }
                 }
@@ -717,16 +745,20 @@
                 white-space: normal !important;
             }
         }
-        .nav-slider {
-            border-radius: 20px 0 0 0;
-            background-color: var(--color-fill-2) !important;
-        }
-        .navigation-menu {
-            background-color: var(--color-fill-2) !important;
+        .navigation-nav {
+            background-color: var(--color-bg-1);
+            .nav-slider {
+                border-radius: 20px 0 0 0;
+                background-color: var(--nav-side-bg) !important;
+            }
+            .navigation-menu {
+                background-color: var(--nav-side-bg) !important;
+            }
         }
         .navigation-container {
             width: 100% !important;
             max-width: 100% !important;
+            background-color: var(--color-bg-1);
             .container-content {
                 width: 100% !important;
                 max-width: 100% !important;
@@ -756,7 +788,7 @@
         background: var(--color-bg-white);
         padding: 6px 0;
         margin: 0;
-        color: var(--color-text-3);
+        color: var(--nav-side-item-text-color);
         .nav-item {
             -webkit-box-flex: 0;
             -ms-flex: 0 0 32px;
@@ -768,7 +800,7 @@
             padding: 0 20px;
             list-style: none;
             &:hover {
-                color: var(--primary-6);
+                color: var(--nav-side-item-text-active-color);
                 cursor: pointer;
                 background-color: var(--color-bg-4);
             }
@@ -785,13 +817,13 @@
         &.icon-arrows-left {
             font-size: 30px;
             margin-right: 10px;
-            color: var(--primary-6);
+            color: var(--nav-side-item-text-active-color);
             cursor: pointer;
         }
     }
     .navigation-sbmenu,
     .navigation-menu-item {
-        background-color: var(--color-fill-2) !important;
+        // background-color: var(--nav-header-bg) !important;
         &:hover {
             .navigation-menu-item-name {
                 font-size: 14px !important;

@@ -31,7 +31,7 @@ body ul {
     width: 100%;
     position: relative;
     height: 100%;
-    color: $cw-color-text-1 !important;
+    color: var(--color-text-2) !important;
 }
 
 @media screen and (min-width: 1368px) {

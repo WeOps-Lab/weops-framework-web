@@ -69,7 +69,7 @@
 <style scoped lang="scss">
 .header-sub-container {
     width: 100%;
-    background: #fff;
+    // background: #fff;
     position: sticky;
     z-index: 99;
     min-height: 50px;
@@ -78,7 +78,7 @@
         display: flex;
         font-size: 16px;
         font-weight: 500;
-        color: $cw-color-text-0;
+        color: var(--color-text-1);
         align-items: center;
         position: relative;
         min-height: 50px;
@@ -121,16 +121,16 @@
             font-weight: 500;
             display: inline-block;
             padding: 0 0 13px 0;
-            color: $cw-color-text-1;
+            color: var(--color-text-2);
             cursor: pointer;
             position: relative;
             margin: 0 16px;
             &.active {
-                color: $cw-color-text-0;
+                // color: var(--color-text-1);
                 border-bottom: 3px solid $cw-color-primary;
             }
             &:hover {
-                color: #1E252E;
+                // color: var(--color-text-1);
             }
         }
     }
