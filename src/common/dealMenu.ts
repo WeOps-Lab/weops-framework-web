@@ -81,25 +81,3 @@ export function filterDataWithId(arr, id) {
     }
     return [] // 没有找到符合条件的项
 }
-
-export function filterMenuByIds(data = [], menus) {
-    const menuSet = new Set(menus) // 将数组转为集合，使得查找更快
-    const result = []
-    for (const item of data) {
-        // 只有在 item 的 id 在菜单集合中，item中含有isUrl为true的字段或者它有子项时，才进行处理
-        if (menuSet.has(item.id) || item.isUrl || item.children) {
-            // 如果 item 的 id 在菜单集合中，或者item中含有isUrl为true的字段，将其添加到结果中
-            if (menuSet.has(item.id) || item.isUrl) {
-                result.push(item)
-            }
-            // 如果 item 有子项，对其进行递归处理
-            if (item.children) {
-                const children = filterMenuByIds(item.children, menus)
-                if (children.length > 0) {
-                    result.push({...item, children: children})
-                }
-            }
-        }
-    }
-    return result
-}
