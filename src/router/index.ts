@@ -3,7 +3,7 @@ import store from '@/store'
 import Router from 'vue-router'
 import { frameRouter } from './frameRouter'
 import httpConfig from '@/api/axiosconfig/request'
-import { findFirstUrl, findIdsWithNoChildren, hasPathInChildren, filterMenuByIds } from '@/common/dealMenu'
+import { findFirstUrl, findIdsWithNoChildren, hasPathInChildren } from '@/common/dealMenu'
 
 // 遇到路由重读点击报错时，取消注释解决
 // const originalPush = Router.prototype.push
@@ -108,11 +108,13 @@ function dealRouterByPermission(to, from, next) {
     } else {
         const menus = userInfo.menus || []
         // 处理自定义菜单的默认路由的逻辑
-        const weopsMenu = filterMenuByIds(userInfo?.weops_menu, menus)
+        const weopsMenu = userInfo?.weops_menu
         if (weopsMenu?.length) {
             // 若自定义菜单中不存在url='/'的数据,则默认访问第一个路由
+            console.log(weopsMenu, to.fullPath === '/', !hasPathInChildren(weopsMenu, '/'))
             if (to.fullPath === '/' && !hasPathInChildren(weopsMenu, '/')) {
                 const defaultName = findFirstUrl(weopsMenu)
+                console.log('defaultName', defaultName)
                 next({ name: defaultName })
             }
         }
