@@ -303,6 +303,7 @@
             this.theme = val
             bkMagic.useTheme(val === 'dark' ? themeDark : themeLight)
             window.localStorage.setItem('uiTheme', val)
+            this.$bus.$emit('changeUiTheme')
         }
         checkVersionLog() {
             const versionLog: any = this.$refs.versionLog
